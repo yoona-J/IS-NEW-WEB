@@ -23,11 +23,12 @@ export async function fetchApi<T>(
 
 // Notices API
 export const noticesApi = {
-  getAll: (params?: { category?: string; page?: number; limit?: number }) => {
+  getAll: (params?: { category?: string; page?: number; limit?: number; search?: string }) => {
     const searchParams = new URLSearchParams();
     if (params?.category) searchParams.set('category', params.category);
     if (params?.page) searchParams.set('page', String(params.page));
     if (params?.limit) searchParams.set('limit', String(params.limit));
+    if (params?.search) searchParams.set('search', params.search);
     return fetchApi<{ notices: Notice[]; pagination: Pagination }>(`/api/notices?${searchParams}`);
   },
   getById: (id: string) => fetchApi<Notice>(`/api/notices/${id}`),
@@ -65,11 +66,12 @@ export const noticesApi = {
 
 // Jobs API
 export const jobsApi = {
-  getAll: (params?: { category?: string; page?: number; limit?: number }) => {
+  getAll: (params?: { category?: string; page?: number; limit?: number; search?: string }) => {
     const searchParams = new URLSearchParams();
     if (params?.category) searchParams.set('category', params.category);
     if (params?.page) searchParams.set('page', String(params.page));
     if (params?.limit) searchParams.set('limit', String(params.limit));
+    if (params?.search) searchParams.set('search', params.search);
     return fetchApi<{ jobs: Job[]; pagination: Pagination }>(`/api/jobs?${searchParams}`);
   },
   getById: (id: string) => fetchApi<Job>(`/api/jobs/${id}`),

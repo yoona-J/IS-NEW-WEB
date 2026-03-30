@@ -27,11 +27,15 @@ const upload = multer({
 // Get all notices (public)
 router.get('/', async (req, res) => {
   try {
-    const { category, limit, page = 1 } = req.query;
+    const { category, limit, page = 1, search } = req.query;
     const query = { isActive: true };
 
     if (category) {
       query.category = category;
+    }
+
+    if (search && search.trim()) {
+      query.title = { $regex: search.trim(), $options: 'i' };
     }
 
     const pageSize = parseInt(limit) || 20;
