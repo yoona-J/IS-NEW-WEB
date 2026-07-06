@@ -12,17 +12,17 @@ function requestGet(url, headers = {}) {
       headers,
       timeout: 10000,
     }, (res) => {
-      let data = '';
+      const chunks = [];
 
       res.on('data', (chunk) => {
-        data += chunk;
+        chunks.push(chunk);
       });
 
       res.on('end', () => {
         resolve({
           status: res.statusCode,
           headers: res.headers,
-          body: data,
+          body: Buffer.concat(chunks).toString('utf8'),
         });
       });
     });
