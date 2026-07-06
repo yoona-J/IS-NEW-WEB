@@ -9,6 +9,8 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+/server/uploads/files
+/server/uploads/notices
 
 # testing
 /coverage
@@ -48,5 +50,3 @@ next-env.d.ts
 logs/
 
 /reference/
-
-CLAUDE.md

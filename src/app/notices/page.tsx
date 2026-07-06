@@ -86,6 +86,7 @@ function NoticesContent() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+
       {/* Search Bar */}
       <div className="relative mb-6">
         <input

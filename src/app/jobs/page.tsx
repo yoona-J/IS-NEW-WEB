@@ -32,7 +32,6 @@ function JobsContent() {
   useEffect(() => {
     setSearchInput(currentSearch);
   }, [currentSearch]);
-
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -114,7 +113,6 @@ function JobsContent() {
           <Search className="w-4 h-4" />
         </button>
       </div>
-
       {/* Category Tabs */}
       <div className="flex gap-0 border-b border-gray-200 mb-8">
         <button

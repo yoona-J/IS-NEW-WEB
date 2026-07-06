@@ -15,8 +15,8 @@ router.get('/', async (req, res) => {
 
     if (search && search.trim()) {
       query.$or = [
-        { title: { $regex: search.trim(), $options: 'i' } },
-        { company: { $regex: search.trim(), $options: 'i' } },
+	{ title: {$regex:search.trim(), $options: 'i' } },
+	{ company: {$regex: search.trim(), $options: 'i' } },
       ];
     }
 

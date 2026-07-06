@@ -54,7 +54,7 @@ export const navigation: NavItem[] = [
 
 export const contactInfo = {
   address: "(04763) 서울특별시 성동구 왕십리로 222 한양대학교 공업센터 본관 503호",
-  telUndergrad: "+82-2-2220-3137",
+  telUndergrad: "+82-2-2220-3133",
   telGrad: "+82-2-2220-2341",
   fax: "+82-2-2220-3139",
   managers: [
