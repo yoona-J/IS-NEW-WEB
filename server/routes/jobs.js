@@ -6,11 +6,18 @@ const { requireAdmin } = require('../middleware/adminAuth');
 // Get all jobs (public)
 router.get('/', async (req, res) => {
   try {
-    const { category, limit, page = 1 } = req.query;
+    const { category, limit, page = 1, search } = req.query;
     const query = { isActive: true };
 
     if (category) {
       query.category = category;
+    }
+
+    if (search && search.trim()) {
+      query.$or = [
+	{ title: {$regex:search.trim(), $options: 'i' } },
+	{ company: {$regex: search.trim(), $options: 'i' } },
+      ];
     }
 
     const pageSize = parseInt(limit) || 20;

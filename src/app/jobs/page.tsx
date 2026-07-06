@@ -3,7 +3,7 @@
 import PageHeader from "@/components/ui/PageHeader";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Building2, Calendar, ChevronRight, ChevronLeft } from "lucide-react";
+import { Building2, Calendar, ChevronRight, ChevronLeft, Search, X } from "lucide-react";
 import { useEffect, useState, Suspense } from "react";
 import { jobsApi, Job, Pagination } from "@/lib/api";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -21,12 +21,17 @@ function JobsContent() {
   const router = useRouter();
   const currentCategory = searchParams.get("category") || "";
   const currentPage = parseInt(searchParams.get("page") || "1");
+  const currentSearch = searchParams.get("q") || "";
 
   const [jobs, setJobs] = useState<Job[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchInput, setSearchInput] = useState(currentSearch);
 
+  useEffect(() => {
+    setSearchInput(currentSearch);
+  }, [currentSearch]);
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -36,6 +41,7 @@ function JobsContent() {
           category: currentCategory || undefined,
           page: currentPage,
           limit: 15,
+          search: currentSearch || undefined,
         });
         setJobs(data.jobs);
         setPagination(data.pagination);
@@ -46,24 +52,67 @@ function JobsContent() {
       }
     };
     fetchJobs();
-  }, [currentCategory, currentPage]);
+  }, [currentCategory, currentPage, currentSearch]);
 
   const setCategoryFilter = (cat: string) => {
     const params = new URLSearchParams();
     if (cat) params.set("category", cat);
+    if (currentSearch) params.set("q", currentSearch);
     router.push(`/jobs?${params.toString()}`);
   };
 
   const setPage = (page: number) => {
     const params = new URLSearchParams();
     if (currentCategory) params.set("category", currentCategory);
+    if (currentSearch) params.set("q", currentSearch);
     if (page > 1) params.set("page", String(page));
+    router.push(`/jobs?${params.toString()}`);
+  };
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (currentCategory) params.set("category", currentCategory);
+    if (searchInput.trim()) params.set("q", searchInput.trim());
+    router.push(`/jobs?${params.toString()}`);
+  };
+
+  const clearSearch = () => {
+    setSearchInput("");
+    const params = new URLSearchParams();
+    if (currentCategory) params.set("category", currentCategory);
     router.push(`/jobs?${params.toString()}`);
   };
 
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      {/* Search Bar */}
+      <div className="relative mb-6">
+        <input
+          type="text"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+          placeholder="검색어를 입력하세요 (제목, 기업명)"
+          className="w-full px-4 py-2.5 pr-20 border border-gray-200 text-sm focus:outline-none focus:border-[#0066B3] transition-colors"
+        />
+        {currentSearch && (
+          <button
+            onClick={clearSearch}
+            className="absolute right-10 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors"
+            aria-label="검색 초기화"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
+        <button
+          onClick={handleSearch}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#0066B3] transition-colors"
+          aria-label="검색"
+        >
+          <Search className="w-4 h-4" />
+        </button>
+      </div>
       {/* Category Tabs */}
       <div className="flex gap-0 border-b border-gray-200 mb-8">
         <button
@@ -103,7 +152,9 @@ function JobsContent() {
         </div>
       ) : jobs.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-gray-400 text-sm">채용 정보가 없습니다</p>
+          <p className="text-gray-400 text-sm">
+            {currentSearch ? `"${currentSearch}"에 대한 검색 결과가 없습니다` : "채용 정보가 없습니다"}
+          </p>
         </div>
       ) : (
         <>
@@ -189,7 +240,7 @@ function JobsContent() {
         <p className="text-gray-500 text-sm">
           기업 채용 담당자께서는 정보시스템학과 사무실로 연락주시면 채용 공고를 게시해 드립니다.
           <br />
-          연락처: 02-2220-3137 / 이메일: is@hanyang.ac.kr
+          연락처: 02-2220-3133 / 이메일: phiphi@hanyang.ac.kr
         </p>
       </div>
     </div>

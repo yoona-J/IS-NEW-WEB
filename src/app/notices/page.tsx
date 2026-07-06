@@ -3,7 +3,7 @@
 import PageHeader from "@/components/ui/PageHeader";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Calendar, ChevronRight, ChevronLeft } from "lucide-react";
+import { Calendar, ChevronRight, ChevronLeft, Search, X } from "lucide-react";
 import { useEffect, useState, Suspense } from "react";
 import { noticesApi, Notice, Pagination } from "@/lib/api";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -20,11 +20,17 @@ function NoticesContent() {
   const router = useRouter();
   const currentCategory = searchParams.get("category") || "";
   const currentPage = parseInt(searchParams.get("page") || "1");
+  const currentSearch = searchParams.get("q") || "";
 
   const [notices, setNotices] = useState<Notice[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchInput, setSearchInput] = useState(currentSearch);
+
+  useEffect(() => {
+    setSearchInput(currentSearch);
+  }, [currentSearch]);
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -35,6 +41,7 @@ function NoticesContent() {
           category: currentCategory || undefined,
           page: currentPage,
           limit: 15,
+          search: currentSearch || undefined,
         });
         setNotices(data.notices);
         setPagination(data.pagination);
@@ -45,24 +52,69 @@ function NoticesContent() {
       }
     };
     fetchNotices();
-  }, [currentCategory, currentPage]);
+  }, [currentCategory, currentPage, currentSearch]);
 
   const setCategory = (cat: string) => {
     const params = new URLSearchParams();
     if (cat) params.set("category", cat);
+    if (currentSearch) params.set("q", currentSearch);
     router.push(`/notices?${params.toString()}`);
   };
 
   const setPage = (page: number) => {
     const params = new URLSearchParams();
     if (currentCategory) params.set("category", currentCategory);
+    if (currentSearch) params.set("q", currentSearch);
     if (page > 1) params.set("page", String(page));
+    router.push(`/notices?${params.toString()}`);
+  };
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (currentCategory) params.set("category", currentCategory);
+    if (searchInput.trim()) params.set("q", searchInput.trim());
+    router.push(`/notices?${params.toString()}`);
+  };
+
+  const clearSearch = () => {
+    setSearchInput("");
+    const params = new URLSearchParams();
+    if (currentCategory) params.set("category", currentCategory);
     router.push(`/notices?${params.toString()}`);
   };
 
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+
+      {/* Search Bar */}
+      <div className="relative mb-6">
+        <input
+          type="text"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+          placeholder="검색어를 입력하세요"
+          className="w-full px-4 py-2.5 pr-20 border border-gray-200 text-sm focus:outline-none focus:border-[#0066B3] transition-colors"
+        />
+        {currentSearch && (
+          <button
+            onClick={clearSearch}
+            className="absolute right-10 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors"
+            aria-label="검색 초기화"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
+        <button
+          onClick={handleSearch}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#0066B3] transition-colors"
+          aria-label="검색"
+        >
+          <Search className="w-4 h-4" />
+        </button>
+      </div>
+
       {/* Category Tabs */}
       <div className="flex gap-0 border-b border-gray-200 mb-8">
         <button
@@ -102,7 +154,9 @@ function NoticesContent() {
         </div>
       ) : notices.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-gray-400 text-sm">공지사항이 없습니다</p>
+          <p className="text-gray-400 text-sm">
+            {currentSearch ? `"${currentSearch}"에 대한 검색 결과가 없습니다` : "공지사항이 없습니다"}
+          </p>
         </div>
       ) : (
         <>

@@ -21,7 +21,7 @@ export default function Header() {
               alt="한양대학교 정보시스템학과"
               width={260}
               height={36}
-              className="h-18 lg:h-18 w-auto cursor-pointer select-none"
+              className="h-10 sm:h-12 md:h-15 lg:h-18 w-auto cursor-pointer select-none"
               priority
             />
           </Link>
