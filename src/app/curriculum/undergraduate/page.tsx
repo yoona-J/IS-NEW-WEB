@@ -150,10 +150,10 @@ export default function UndergraduateCurriculumPage() {
         <div className="border border-gray-200 p-4 mb-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label htmlFor="filter-year" className="block text-xs font-medium text-gray-500 mb-1">학년</label>
+              <label htmlFor="filter-year" className="block text-xs font-medium text-gray-500 mb-1">이수학년</label>
               <select
                 id="filter-year"
-                title="학년 필터"
+                title="이수학년 필터"
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(e.target.value)}
                 className="w-full px-3 py-2 text-sm border border-gray-200 focus:ring-1 focus:ring-[#0066B3] focus:border-[#0066B3] outline-none"
@@ -165,10 +165,10 @@ export default function UndergraduateCurriculumPage() {
               </select>
             </div>
             <div>
-              <label htmlFor="filter-semester" className="block text-xs font-medium text-gray-500 mb-1">학기</label>
+              <label htmlFor="filter-semester" className="block text-xs font-medium text-gray-500 mb-1">이수학기</label>
               <select
                 id="filter-semester"
-                title="학기 필터"
+                title="이수학기 필터"
                 value={selectedSemester}
                 onChange={(e) => setSelectedSemester(e.target.value)}
                 className="w-full px-3 py-2 text-sm border border-gray-200 focus:ring-1 focus:ring-[#0066B3] focus:border-[#0066B3] outline-none"
@@ -225,8 +225,8 @@ export default function UndergraduateCurriculumPage() {
                       <th className="px-2 py-2.5 text-center text-xs font-medium">실습</th>
                       <th className="px-3 py-2.5 text-center text-xs font-medium">이수구분</th>
                       <th className="px-3 py-2.5 text-center text-xs font-medium">이수단위</th>
-                      <th className="px-2 py-2.5 text-center text-xs font-medium">학년</th>
-                      <th className="px-2 py-2.5 text-center text-xs font-medium">학기</th>
+                      <th className="px-2 py-2.5 text-center text-xs font-medium">이수학년</th>
+                      <th className="px-2 py-2.5 text-center text-xs font-medium">이수학기</th>
                       <th className="px-2 py-2.5 text-center text-xs font-medium">개설연도</th>
                       <th className="px-2 py-2.5 text-center text-xs font-medium">개설학기</th>
                       <th className="px-2 py-2.5 text-center text-xs font-medium">종료연도</th>
