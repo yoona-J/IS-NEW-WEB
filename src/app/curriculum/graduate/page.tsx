@@ -135,6 +135,11 @@ export default function GraduateCurriculumPage() {
           ))}
         </div>
 
+        {/* Notice */}
+        <p className="mb-4 text-xs text-gray-500">
+          교육과정은 매학기 변동이 있으므로 한양인포털의 교육과정조회 내역을 확인하시기 바랍니다.
+        </p>
+
         {/* Filters */}
         <div className="border border-gray-200 p-4 mb-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
