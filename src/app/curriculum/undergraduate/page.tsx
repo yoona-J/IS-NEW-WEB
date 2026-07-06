@@ -17,7 +17,9 @@ interface Course {
   ISU_TERM: string;
   GYGJ_CD: string;
   START_YEAR: string;
+  START_TERM: string;
   END_YEAR: string;
+  END_TERM: string;
   BIGO: string | null;
 }
 
@@ -220,12 +222,16 @@ export default function UndergraduateCurriculumPage() {
                       <th className="px-3 py-2.5 text-center text-xs font-medium">이수단위</th>
                       <th className="px-2 py-2.5 text-center text-xs font-medium">학년</th>
                       <th className="px-2 py-2.5 text-center text-xs font-medium">학기</th>
+                      <th className="px-2 py-2.5 text-center text-xs font-medium">개설연도</th>
+                      <th className="px-2 py-2.5 text-center text-xs font-medium">개설학기</th>
+                      <th className="px-2 py-2.5 text-center text-xs font-medium">종료연도</th>
+                      <th className="px-2 py-2.5 text-center text-xs font-medium">종료학기</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {filteredCourses.length === 0 ? (
                       <tr>
-                        <td colSpan={9} className="px-4 py-8 text-center text-gray-400 text-sm">
+                        <td colSpan={13} className="px-4 py-8 text-center text-gray-400 text-sm">
                           조건에 맞는 과목이 없습니다.
                         </td>
                       </tr>
@@ -251,6 +257,10 @@ export default function UndergraduateCurriculumPage() {
                           <td className="px-3 py-2.5 text-xs text-center text-gray-600">{stripSuffix(course.ISU_UNIT_CD_NM)}</td>
                           <td className="px-2 py-2.5 text-xs text-center text-gray-600">{course.ISU_GRADE}</td>
                           <td className="px-2 py-2.5 text-xs text-center text-gray-600">{stripSuffix(course.ISU_TERM)}</td>
+                          <td className="px-2 py-2.5 text-xs text-center text-gray-600">{course.START_YEAR || '-'}</td>
+                          <td className="px-2 py-2.5 text-xs text-center text-gray-600">{course.START_TERM ? stripSuffix(course.START_TERM) : '-'}</td>
+                          <td className="px-2 py-2.5 text-xs text-center text-gray-600">{course.END_YEAR || '-'}</td>
+                          <td className="px-2 py-2.5 text-xs text-center text-gray-600">{course.END_TERM ? stripSuffix(course.END_TERM) : '-'}</td>
                         </tr>
                       ))
                     )}
