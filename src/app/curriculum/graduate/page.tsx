@@ -35,7 +35,8 @@ function parseCurriculumLabel(gygjCd: string): string {
 }
 
 function stripSuffix(value: string): string {
-  return value.trim().replace(/[가-힣]+$/g, '');
+  //return value.trim().replace(/[가-힣]+$/g, '');
+  return String(value ?? '').trim().replace(/[가-힣]+$/g, '');
 }
 
 function abbreviateType(value: string): string {
@@ -96,12 +97,14 @@ export default function GraduateCurriculumPage() {
   };
 
   const filteredCourses = courses.filter(course => {
-    if (selectedSemester !== 'all' && course.ISU_TERM.trim() !== selectedSemester) return false;
+    // if (selectedSemester !== 'all' && course.ISU_TERM.trim() !== selectedSemester) return false;
+    if (selectedSemester !== 'all' && String(course.ISU_TERM ?? '').trim() !== selectedSemester) return false;
     if (selectedType !== 'all' && course.ISU_GB_NM !== selectedType) return false;
     return true;
   });
 
-  const semesters = [...new Set(courses.map(c => c.ISU_TERM.trim()))].sort();
+  // const semesters = [...new Set(courses.map(c => c.ISU_TERM.trim()))].sort();
+  const semesters = [...new Set(courses.map(c => String(c.ISU_TERM ?? '').trim()).filter(Boolean))].sort();
   const types = [...new Set(courses.map(c => c.ISU_GB_NM))];
 
   return (
